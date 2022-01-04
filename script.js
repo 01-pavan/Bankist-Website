@@ -30,7 +30,8 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-////////////////
+//////////////// LECTURES ////////////
+/*
 console.log(document.documentElement);
 // console.log(document.head);
 console.log(document.body);
@@ -97,3 +98,44 @@ console.log(Link.getAttribute('href'));
 
 //Data attributes
 console.log(logo.dataset.versionNumber);
+*/
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+btnScrollTo.addEventListener('click', function (e) {
+  // const s1coords = section1.getBoundingClientRect(); //The Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
+  // console.log(s1coords);
+  // console.log(e.target); //The target event property returns the element that triggered the event.
+  // console.log(e.target.getBoundingClientRect()); //btnScrollTo  INFO
+  // console.log('Current scroll (x/y)', window.pageXOffset, pageYOffset); //it returns the number of pixels the document is currently scrolled along the horizontal axis(pageXOffset)  and vertical axis(pageYOffset) (that is, up or down)
+  // console.log(
+  //   'height/width viewport',
+  //   document.documentElement.clientHeight,
+  //   document.documentElement.clientWidth
+  // );
+  //scrolling
+
+  // window.scrollTo(
+  //   s1coords.left + window.pageXOffset,
+  //   s1coords.top + window.pageYOffset
+  // );
+
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,  //oldschool way
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  //new way
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+const h1 = document.querySelector('h1');
+//The mouseenter event is fired at an Element when a pointing device (usually a mouse) is initially moved so that its hotspot is within the element at which the event was fired.
+h1.addEventListener('mouseenter', function (e) {
+  alert('you are reading the heading');
+});
+
+h1.onmouseenter = function (e) {
+  alert('this is old school way of listening events');
+};
