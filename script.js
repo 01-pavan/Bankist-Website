@@ -29,6 +29,53 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+//page navigation
+
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+//above code is inefficient because for every link we need a function to handle event. //it is used when there are less elements, if there are 1000 elements then it create performance problem
+
+//event delegation
+//1. add event listener to commom parent element
+//2. determine what element originated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  //matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    //by this we can handle only click events on elements with classs name nav__link//event cannot be handled on parent element
+    e.preventDefault();
+
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+//building tabbed commponent
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+tabContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab'); //it will also work if we clicked on span
+  console.log(clicked);
+
+  //guard clause
+  if (!clicked) return; //if will make to stop adding  operations__tab--active to element when we clicked outside of buttons
+
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+
+  //activate content area
+  tabsContent.forEach(t => t.classList.remove('operations__content--active'));
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
 
 //////////////// LECTURES ////////////
 /*
@@ -130,12 +177,67 @@ btnScrollTo.addEventListener('click', function (e) {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-const h1 = document.querySelector('h1');
-//The mouseenter event is fired at an Element when a pointing device (usually a mouse) is initially moved so that its hotspot is within the element at which the event was fired.
-h1.addEventListener('mouseenter', function (e) {
-  alert('you are reading the heading');
-});
+// const h1 = document.querySelector('h1');
+// //The mouseenter event is fired at an Element when a pointing device (usually a mouse) is initially moved so that its hotspot is within the element at which the event was fired.
+// h1.addEventListener('mouseenter', function (e) {
+//   alert('you are reading the heading');
+// });
 
-h1.onmouseenter = function (e) {
-  alert('this is old school way of listening events');
-};
+// h1.onmouseenter = function (e) {
+//   alert('this is old school way of listening events');
+// };
+
+// //event propagation practice
+// //✅immportant
+
+// //random  color
+// //rgb(255,255,255)
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+// console.log(randomColor());
+
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor(); //in event handler this keyword always attach to the element to which event handler attached
+//   console.log('link', e.target, e.currentTarget);
+//   //we can stop the event propagation
+//   // e.stopPropagation();
+// });
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('container', e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav').addEventListener(
+//   'click',
+//   function (e) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('nav', e.target, e.currentTarget); //e.target is clicked element //current target is actual element
+//   }
+//   // true //when we gives true then events are handled  in capturing phase
+// );
+
+//DOM traversing
+
+const h1 = document.querySelector('h1');
+
+//going downwards: child
+console.log(h1.querySelectorAll('.highlight')); // it returns all childs of h1 with .hightlight class
+console.log(h1.childNodes); //retuns all childs of h1
+console.log(h1.children);
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+//going upwards : parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+//✅element.closest() The closest() method searches up the DOM tree for the closest element which matches a specified CSS selector. It starts at the element itself, then tests the parent, grandparent, and so on until a match is found. If a match is not found, this method returns null.
+h1.closest('.header').style.background = 'var (--gradient-secondary)';
+h1.closest('h1').style.background = 'var (--gradient-primary)';
+
+//going sideways
+console.log(h1.previousElementSibling); //The previousElementSibling property returns the previous element of the specified element, in the same tree level.
+console.log(h1.nextElementSibling);
