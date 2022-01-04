@@ -62,16 +62,16 @@ const tabContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 tabContainer.addEventListener('click', function (e) {
   const clicked = e.target.closest('.operations__tab'); //it will also work if we clicked on span
-  console.log(clicked);
 
   //guard clause
   if (!clicked) return; //if will make to stop adding  operations__tab--active to element when we clicked outside of buttons
-
+  //remove class
   tabs.forEach(t => t.classList.remove('operations__tab--active'));
-  clicked.classList.add('operations__tab--active');
 
-  //activate content area
   tabsContent.forEach(t => t.classList.remove('operations__content--active'));
+  //add classlist
+  //activate content area
+  clicked.classList.add('operations__tab--active');
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
