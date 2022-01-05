@@ -97,17 +97,41 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 nav.addEventListener('mouseout', handleHover.bind(1));
 
 //sticky navigation
-const initialCoords = section1.getBoundingClientRect();
-console.log(initialCoords);
-window.addEventListener('scroll', function (e) {
-  console.log(window.scrollY);
-  if (this.window.scrollY > initialCoords.top) {
-    nav.classList.add('sticky');
-  } else {
-    nav.classList.remove('sticky');
-  }
-});
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+// window.addEventListener('scroll', function (e) {
+//   console.log(window.scrollY);
+//   if (this.window.scrollY > initialCoords.top) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
 
+//sticky navigation: intersection observer API
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1);
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entry.isIntersecting);
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+const header = document.querySelector('.header');
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+});
+headerObserver.observe(header);
 //////////////// LECTURES ////////////
 /*
 console.log(document.documentElement);
@@ -252,23 +276,23 @@ btnScrollTo.addEventListener('click', function (e) {
 
 //DOM traversing
 
-const h1 = document.querySelector('h1');
+// const h1 = document.querySelector('h1');
 
-//going downwards: child
-console.log(h1.querySelectorAll('.highlight')); // it returns all childs of h1 with .hightlight class
-console.log(h1.childNodes); //retuns all childs of h1
-console.log(h1.children);
-h1.firstElementChild.style.color = 'white';
-h1.lastElementChild.style.color = 'orangered';
+// //going downwards: child
+// console.log(h1.querySelectorAll('.highlight')); // it returns all childs of h1 with .hightlight class
+// console.log(h1.childNodes); //retuns all childs of h1
+// console.log(h1.children);
+// h1.firstElementChild.style.color = 'white';
+// h1.lastElementChild.style.color = 'orangered';
 
-//going upwards : parents
-console.log(h1.parentNode);
-console.log(h1.parentElement);
+// //going upwards : parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
 
-//✅element.closest() The closest() method searches up the DOM tree for the closest element which matches a specified CSS selector. It starts at the element itself, then tests the parent, grandparent, and so on until a match is found. If a match is not found, this method returns null.
-h1.closest('.header').style.background = 'var (--gradient-secondary)';
-h1.closest('h1').style.background = 'var (--gradient-primary)';
+// //✅element.closest() The closest() method searches up the DOM tree for the closest element which matches a specified CSS selector. It starts at the element itself, then tests the parent, grandparent, and so on until a match is found. If a match is not found, this method returns null.
+// h1.closest('.header').style.background = 'var (--gradient-secondary)';
+// h1.closest('h1').style.background = 'var (--gradient-primary)';
 
-//going sideways
-console.log(h1.previousElementSibling); //The previousElementSibling property returns the previous element of the specified element, in the same tree level.
-console.log(h1.nextElementSibling);
+// //going sideways
+// console.log(h1.previousElementSibling); //The previousElementSibling property returns the previous element of the specified element, in the same tree level.
+// console.log(h1.nextElementSibling);
